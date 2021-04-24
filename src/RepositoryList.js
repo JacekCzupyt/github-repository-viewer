@@ -24,7 +24,7 @@ function RepositoryList(props){
         <div>
             {isLoaded ?
             <div>
-                {repos.map((repo) => <div><p>{repo.name}</p></div>)}
+                {repos.sort((r1, r2) => r2.stargazers_count - r1.stargazers_count).map((repo) => <div><p>{repo.name}</p></div>)}
             </div>
             :
             "Loading..."
