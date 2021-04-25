@@ -1,5 +1,6 @@
 import {useEffect, useState} from 'react'
-
+import Table from "react-bootstrap/Table";
+import RepositoryItem from './RepositoryItem'
 
 function RepositoryList(props){
 
@@ -31,6 +32,26 @@ function RepositoryList(props){
         LoadData();
     }, [])
 
+    const MakeTable = () => {
+        return(
+        <Table bordered variant="secondary">
+            <thead>
+              <tr>
+                <th width="20%">Name</th>
+                <th width="20%">Owner</th>
+                <th width="40%">Description</th>
+                <th width="20%">Stars</th>
+              </tr>
+            </thead>
+            <tbody>
+              {repos
+              .sort((r1, r2) => r2.stargazers_count - r1.stargazers_count)
+              .map((repo) => <RepositoryItem repo={repo}/>)}
+            </tbody>
+        </Table>
+        );
+    }
+
     return(
         <div>
             {isLoaded ?
@@ -40,7 +61,8 @@ function RepositoryList(props){
                 {errorMessage === "" ? 
                 (
                     repos.length > 0 ?
-                    repos.sort((r1, r2) => r2.stargazers_count - r1.stargazers_count).map((repo) => <div><p>{repo.name}</p></div>)
+                    //repos.sort((r1, r2) => r2.stargazers_count - r1.stargazers_count).map((repo) => <div><p>{repo.name}</p></div>)
+                    MakeTable()
                     :
                     <p>User has not repositories</p>
                 )
