@@ -1,9 +1,11 @@
 import {useEffect, useState} from 'react'
-import Table from "react-bootstrap/Table";
+import Table from "react-bootstrap/Table"
+import Form from "react-bootstrap/Form"
+import Button from "react-bootstrap/Button"
 import RepositoryItem from './RepositoryItem'
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-//import './styles/RepositoryList.css'
+import { Col } from 'react-bootstrap'
 
 function RepositoryList(props){
 
@@ -57,24 +59,34 @@ function RepositoryList(props){
 
     return(
         <div>
-            {isLoaded ?
             <div>
-                <input type="text" name="GithubUser" placeholder="GitHub Username" onChange={(e) => setUsername(e.target.value)} value={username}/>
-                <button onClick={LoadData}>Search</button>
-                {errorMessage === "" ? 
+                <Form className="m-1">
+                    <Form.Row>
+                        <Col xs="auto">
+                            <Form.Control type="text" name="GithubUser" placeholder="GitHub Username" onChange={(e) => setUsername(e.target.value)} value={username}/>
+                        </Col>
+                        <Col xs="auto">
+                            <Button variant="dark" type="submit" onClick={LoadData}>Search</Button>
+                        </Col>
+                        
+                    </Form.Row> 
+                </Form>
+
+                {isLoaded ?
+                
+                (errorMessage === "" ? 
                 (
                     repos.length > 0 ?
-                    //repos.sort((r1, r2) => r2.stargazers_count - r1.stargazers_count).map((repo) => <div><p>{repo.name}</p></div>)
                     MakeTable()
                     :
-                    <p>User has not repositories</p>
+                    <p>User has no repositories</p>
                 )
                 :
-                <p>{errorMessage}</p>}
+                <p>{errorMessage}</p>)
+                :
+                "Loading..."
+                }
             </div>
-            :
-            "Loading..."
-            }
         </div>
     )
 }
