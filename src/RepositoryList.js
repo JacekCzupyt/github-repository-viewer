@@ -1,37 +1,92 @@
 import {useEffect, useState} from 'react'
+import Table from "react-bootstrap/Table"
+import Form from "react-bootstrap/Form"
+import Button from "react-bootstrap/Button"
+import RepositoryItem from './RepositoryItem'
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Col } from 'react-bootstrap'
 
 function RepositoryList(props){
 
     const [repos, setRepos] = useState([]);
     const [isLoaded, setIsLoaded] = useState(false);
     const [username, setUsername] = useState("JacekCzupyt");
+    const [errorMessage, setErrorMessage] = useState("");
 
     const LoadData = () => {
-        console.log(username);
         setIsLoaded(false);
         fetch("https://api.github.com/users/" + username + "/repos")
-            .then(res => res.json())
+            .then(res => {
+                if(res.ok){
+                    return res.json();
+                }
+                throw new Error("Request failed with code " + res.status)
+            })
             .then(data => setRepos(data))
             .then(() => setIsLoaded(true))
-            .catch(error => console.error(error));
+            .then(() => setErrorMessage(""))
+            .catch(err => {
+                console.error(err);
+                setErrorMessage("User not found");
+                setIsLoaded(true);
+            });
     }
 
     useEffect(() => {
         LoadData();
     }, [])
 
+    const MakeTable = () => {
+        return(
+        <Table striped bordered hover variant="dark">
+            <thead>
+              <tr>
+                <th width="20%">Name</th>
+                <th width="20%">Owner</th>
+                <th width="40%">Description</th>
+                <th width="20%">Stars</th>
+              </tr>
+            </thead>
+            <tbody>
+              {repos
+              .sort((r1, r2) => r2.stargazers_count - r1.stargazers_count)
+              .map((repo) => <RepositoryItem repo={repo}/>)}
+            </tbody>
+        </Table>
+        );
+    }
+
     return(
         <div>
-            {isLoaded ?
             <div>
-                <input type="text" name="username" placeholder="Username" onChange={(e) => setUsername(e.target.value)} value={username}/>
-                <button onClick={LoadData}>Search</button>
-                {repos.sort((r1, r2) => r2.stargazers_count - r1.stargazers_count).map((repo) => <div><p>{repo.name}</p></div>)}
+                <Form className="m-1">
+                    <Form.Row>
+                        <Col xs="auto">
+                            <Form.Control type="text" name="GithubUser" placeholder="GitHub Username" onChange={(e) => setUsername(e.target.value)} value={username}/>
+                        </Col>
+                        <Col xs="auto">
+                            <Button variant="dark" type="submit" onClick={LoadData}>Search</Button>
+                        </Col>
+                        
+                    </Form.Row> 
+                </Form>
+
+                {isLoaded ?
+                
+                (errorMessage === "" ? 
+                (
+                    repos.length > 0 ?
+                    MakeTable()
+                    :
+                    <p>User has no repositories</p>
+                )
+                :
+                <p>{errorMessage}</p>)
+                :
+                "Loading..."
+                }
             </div>
-            :
-            "Loading..."
-            }
         </div>
     )
 }

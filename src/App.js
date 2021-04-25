@@ -1,5 +1,4 @@
 import './App.css';
-import './RepositoryList';
 import RepositoryList from './RepositoryList';
 
 function App() {
