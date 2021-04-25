@@ -1,4 +1,5 @@
-####English
+English
+----
 
 Allegro recruitment task
 Task nr 2. Frontend Software Engineer
@@ -12,7 +13,8 @@ To install:
 
 The application lists all the public GitHub repositories of a given user, sorted by popularity. It also informs if the user has no repositories, or could not be found at all. It can also redirect to the repositories main page.
 
-####Polski
+Polski
+----
 
 Zadanie rekrutacyjne Allegro
 Zadanie nr 2. Frontend Software Engineer
