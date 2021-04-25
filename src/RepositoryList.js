@@ -2,6 +2,9 @@ import {useEffect, useState} from 'react'
 import Table from "react-bootstrap/Table";
 import RepositoryItem from './RepositoryItem'
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+//import './styles/RepositoryList.css'
+
 function RepositoryList(props){
 
     const [repos, setRepos] = useState([]);
@@ -34,7 +37,7 @@ function RepositoryList(props){
 
     const MakeTable = () => {
         return(
-        <Table bordered variant="secondary">
+        <Table striped bordered hover variant="dark">
             <thead>
               <tr>
                 <th width="20%">Name</th>
