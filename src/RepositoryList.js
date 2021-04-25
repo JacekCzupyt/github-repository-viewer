@@ -44,8 +44,8 @@ function RepositoryList(props){
               <tr>
                 <th width="20%">Name</th>
                 <th width="20%">Owner</th>
-                <th width="40%">Description</th>
-                <th width="20%">Stars</th>
+                <th width="50%">Description</th>
+                <th width="10%">Stars</th>
 
               </tr>
             </thead>
@@ -61,7 +61,7 @@ function RepositoryList(props){
     return(
         <div>
             <div>
-                <Form className="m-1" onSubmit={(e) => {e.preventDefault(); LoadData();}}>
+                <Form className="m-2" onSubmit={(e) => {e.preventDefault(); LoadData();}}>
                     <Form.Row>
                         <Col xs="auto">
                             <Form.Control type="text" name="GithubUser" placeholder="GitHub Username" onChange={(e) => setUsername(e.target.value)} value={username}/>
